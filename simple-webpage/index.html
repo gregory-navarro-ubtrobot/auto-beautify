@@ -1,0 +1,130 @@
+<html>
+  <head>
+    <title>
+      UMAP Color Matrix Display
+    </title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+
+  <body>
+    <div class="fluid-container">
+    <canvas id="c"></canvas>
+    </div>
+    
+    <script type="module">
+      // import mapdata from "./umap_color_matrix.json" assert { type: "json" };
+      import mapdata from "./assets/map-orig.json" assert { type: "json" }
+      const canvasHeight = 768;
+      const canvasWidth = 832;
+      const COLOR_WALL = "rgba(59, 59, 59, 0.5)";
+      const COLOR_GROUND = "#fff";
+      const COLOR_UNDEFINED = "#eee";
+
+      const state = {
+        umap_data: [],
+        umap_color_matrix: [],
+        map_panel_height: 0,
+      };
+
+      const mutations = {
+        clearMapCanvas(state) {
+          state.umap_color_matrix = [];
+        },
+        decodeUmapData(state, umap_data) {
+          console.log("Umap raw data:", umap_data);
+          const height = umap_data.mapdata.length;
+          const width = umap_data.mapdata[0].length;
+
+          state.umap_color_matrix = [];
+
+          const start = Date.now();
+          for (let row = height - 1; row >= 0; row--) {
+            const tempRow = [];
+            for (let col = 0; col < width; col++) {
+              const obfuscatedInt = umap_data.mapdata[row][col];
+              for (let i = 0; i < 16; i++) {
+                const tmp = (obfuscatedInt & (0x03 << (i * 2))) >> (i * 2);
+
+                if (tmp == 0) {
+                  tempRow.push(COLOR_WALL);
+                } else if (tmp == 1) {
+                  tempRow.push(COLOR_GROUND);
+                } else if (tmp == 2) {
+                  tempRow.push(COLOR_UNDEFINED);
+                } else {
+                  tempRow.push(COLOR_UNDEFINED);
+                }
+              }
+            }
+            state.umap_color_matrix.push(tempRow);
+          }
+
+          const delta = Date.now() - start;
+          console.log("Map contains", width * height * 16, "rectangles");
+          console.log(
+            "Elapsed time to decode umap and construct color matrix",
+            delta,
+            "ms"
+          );
+          // end decodeUmapData()
+        },
+        setUMapData(state, umap_data) {
+          state.umap_data = umap_data;
+        },
+        setMapPanelHeight(state, height) {
+          state.map_panel_height = height;
+        },
+      };
+
+      const getters = {
+        getColorUndefined: () => {
+          return COLOR_UNDEFINED;
+        },
+        getUmapColorMatrix: (state) => {
+          return state.umap_color_matrix;
+        },
+        getMapHeight: (state) => {
+          return state.umap_color_matrix.length;
+        },
+        getMapWidth: (state) => {
+          if (state.umap_color_matrix.length > 0) {
+            return state.umap_color_matrix[0].length;
+          }
+          return 0;
+        },
+        getUMapData: (state) => {
+          return state.umap_data;
+        },
+        getMapPanelHeight: (state) => {
+          return state.map_panel_height;
+        },
+      };
+      // run mutations to produce a 2D image
+      mutations.setUMapData(state, mapdata)
+      mutations.decodeUmapData(state, state.umap_data)
+      console.log(state.umap_color_matrix)
+
+      console.log("data processing complete")
+
+      const canvasEl = document.getElementById("c");
+      canvasEl.height = canvasHeight;
+      canvasEl.width = canvasWidth;
+      let ctx = c.getContext("2d");
+      // loop through mapdata.mapdata on a row by row basis
+      // this means double for loop
+      // for each element we will be rendering rectangle of the color found
+      for (let y = 0; y < state.umap_color_matrix.length; y++) {
+        let currentRow = state.umap_color_matrix[y];
+        for (let x = 0; x < currentRow.length; x++) {
+          const color = currentRow[x];
+          if (color !== COLOR_UNDEFINED) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, canvasHeight - y - 1, 1, 1);
+          }
+        }
+      }
+      
+      console.log("drawing complete");
+    </script>
+  </body>
+</html>
