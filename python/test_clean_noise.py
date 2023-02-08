@@ -1,3 +1,5 @@
+print("starting test_clean_noise.py")
+
 from clean_noise import clean_noise
 
 # test the methods used to by top level method clean_noise
@@ -12,3 +14,5 @@ print(z)
 test_2d_array = [[1,2,3], [4,5,6,],[7,8,9]]
 
 # print(get_subset(test_2d_array, 0, 0, 2))
+
+print("ending test_clean_noise.py")
