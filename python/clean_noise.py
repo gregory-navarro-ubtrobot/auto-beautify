@@ -39,9 +39,9 @@ def get_subset(two_d_array, i, j, threshold):
   subset = []
   current_operand = 0
   while current_operand <= threshold:
-    print(current_operand)
+    # print(current_operand)
     for element in get_layer(i, j, current_operand):
-      print(element)
+      # print(element)
       subset.append(two_d_array[element[0]][element[1]])
     current_operand += 1
   return subset
@@ -61,28 +61,28 @@ def get_layer(i, j, operand):
   
   # iterate over top of layer by iterating j upward
   while jcurrent < j + operand:
-    print("first loop: ",icurrent, jcurrent)
+    # print("first loop: ",icurrent, jcurrent)
     if valid_coord([icurrent, jcurrent]):
       layer.append([icurrent, jcurrent])
     jcurrent += 1
   
   # iterate 'downwards' over 'right' side of the layer
   while icurrent < i + operand:
-    print("second loop: ",icurrent, jcurrent)
+    # print("second loop: ",icurrent, jcurrent)
     if valid_coord([icurrent, jcurrent]):
       layer.append([icurrent, jcurrent])
     icurrent += 1
   
   # iterate 'leftwards' over 'bottom' side of the layer
   while jcurrent > j - operand:
-    print("third loop: ",icurrent, jcurrent)
+    # print("third loop: ",icurrent, jcurrent)
     if valid_coord([icurrent, jcurrent]):
       layer.append([icurrent, jcurrent])
     jcurrent -= 1
   
   # iterate 'upwards' over 'left' side of the layer
   while icurrent > least_coord[0]:
-    print("fourth loop: ",icurrent, jcurrent)
+    # print("fourth loop: ",icurrent, jcurrent)
     if valid_coord([icurrent, jcurrent]):
       layer.append([icurrent, jcurrent])
     icurrent -= 1
@@ -134,7 +134,7 @@ f = open('/Users/administrator/Documents/GitHub/parse-.umap/assets/map.umap')
 # returns JSON object as 
 # a dictionary
 data = json.load(f)
-# print(data.keys())
+# # print(data.keys())
 mapdata = data["mapdata"]
 color_matrix = get_color_matrix(mapdata)
 updated_color_matrix = clean_noise(color_matrix, 0, 2, 1, 0.5)
