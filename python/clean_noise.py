@@ -6,15 +6,16 @@ def  clean_color_matrix(two_d_array, target_type, replacement_type, threshold, p
   jmax = len(two_d_array[0])
 
   i = 0
-
+  mutations = 0 # TODO this is for testing, remove later
   while i < imax:
     j = 0
     while j < jmax:
       if updated_array[i][j] == target_type and is_noise(updated_array, i, j, threshold, percent_positivity):
         updated_array[i][j] = replacement_type
+        mutations += 1  # TODO this is for testing, remove later
       j += 1
     i += 1
-
+  print("threshold: {} -- percent positivity: {} -- mutations performed: {}".format(threshold, percent_positivity, mutations))  # TODO this is for testing, remove later
   return updated_array
 
 
