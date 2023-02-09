@@ -4,6 +4,7 @@ from clean_noise import *
 from color_matrix import *
 import json
 import datetime
+import matplotlib.pyplot as plt
 
 # test the methods used to by top level method clean_noise
 # x = get_layer(0,0,0)
@@ -61,9 +62,22 @@ for threshold in range(MAX_THRESHOLD_VALUE):
     threshold_values.append(threshold)
     for percent_positivity in percent_positivity_values:
         result_matrix = clean_color_matrix(basic_color_matrix, TARGET_TYPE, REPLACEMENT_TYPE, threshold, percent_positivity)
+        color_matrix_outputs.append(result_matrix)
         # record details of test in log
-        logEntry = "{} -- threshold: {} -- percent positivity: {}".format(test_number, threshold, percent_positivity) 
+        logEntry = "{} -- threshold: {} -- percent positivity: {} \n".format(test_number, threshold, percent_positivity) 
+        test_out.write(logEntry)
         # TODO add method to count how many differences exist between the two arrays
+        # plot figures, and save the figures to disk in /test_results_<datetime>/images/ 
+        plt.figure(figsize=(8, 8))
+        plt.subplot(121)
+        plt.imshow(basic_color_matrix) 
+        plt.axis('off')
+        plt.title('unprocessed')
+        plt.subplot(122)
+        plt.imshow(result_matrix) 
+        plt.axis('off')
+        plt.title('threshold: {} -- percent positivity: {}'.format(threshold, percent_positivity))
+        plt.savefig('{}/images/{}.png'.format(directory_name, test_number))
 
 
 test_out.close()
