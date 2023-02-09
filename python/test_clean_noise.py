@@ -1,6 +1,9 @@
 print("starting test_clean_noise.py")
 
 from clean_noise import *
+from color_matrix import *
+import json
+import datetime
 
 # test the methods used to by top level method clean_noise
 # x = get_layer(0,0,0)
@@ -25,6 +28,37 @@ from clean_noise import *
 # those should be recorded to test_results/test_results.txt
 # additionally an image should be saved for each test under test_results/images/ with a number that corresponds to entry in test_results.txt
 
+# obtain basic color_matrix
+umapFile =  open('/home/administrator/Documents/research/Auto-Beautify/simple-webpage/assets/map.umap')
+data = json.load(umapFile)
+mapdata = data["mapdata"]
+# basic_color_matrix = get_color_matrix(mapdata)
+
+# open file for writing logs
+datetimestr = datetime.datetime.now() # .replace(" ", "-")
+datetimestr = str(datetimestr).replace(" ", "_")
+directory_name = 'test_results_{}'.format(datetimestr)
+log_file = 'test_results.txt'
+log_file_url = directory_name + "/" + log_file
+test_out = open(log_file_url)
+
+# WALL = 0
+# GROUND = 1
+# # TODO: no definite value for UNDEFINED in this implementation
+# #       this can be corrected in color_matrix.py
+
+# TARGET_TYPE = WALL
+# REPLACEMENT_TYPE = GROUND
+
+# MAX_THRESHOLD_VALUE = 10
+# threshold_values = []
+# percent_positivity_values = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+# color_matrix_outputs = [] # container for processed color_matrices
+
+# for threshold in range(MAX_THRESHOLD_VALUE):
+#     threshold_values.append(threshold)
+#     for percent_positivity in percent_positivity_values:
 
 
+test_out.close()
 print("ending test_clean_noise.py")
