@@ -32,7 +32,7 @@ import datetime
 umapFile =  open('/home/administrator/Documents/research/Auto-Beautify/simple-webpage/assets/map.umap')
 data = json.load(umapFile)
 mapdata = data["mapdata"]
-# basic_color_matrix = get_color_matrix(mapdata)
+basic_color_matrix = get_color_matrix(mapdata)
 
 # open file for writing logs
 datetimestr = datetime.datetime.now() # .replace(" ", "-")
@@ -40,24 +40,30 @@ datetimestr = str(datetimestr).replace(" ", "_")
 directory_name = 'test_results_{}'.format(datetimestr)
 log_file = 'test_results.txt'
 log_file_url = directory_name + "/" + log_file
-test_out = open(log_file_url)
+test_out = open(log_file_url, 'r')
 
-# WALL = 0
-# GROUND = 1
-# # TODO: no definite value for UNDEFINED in this implementation
-# #       this can be corrected in color_matrix.py
+WALL = 0
+GROUND = 1
+# TODO: no definite value for UNDEFINED in this implementation
+#       this can be corrected in color_matrix.py
 
-# TARGET_TYPE = WALL
-# REPLACEMENT_TYPE = GROUND
+TARGET_TYPE = WALL
+REPLACEMENT_TYPE = GROUND
 
-# MAX_THRESHOLD_VALUE = 10
-# threshold_values = []
-# percent_positivity_values = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
-# color_matrix_outputs = [] # container for processed color_matrices
+MAX_THRESHOLD_VALUE = 10
+threshold_values = []
+percent_positivity_values = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+color_matrix_outputs = [] # container for processed color_matrices
 
-# for threshold in range(MAX_THRESHOLD_VALUE):
-#     threshold_values.append(threshold)
-#     for percent_positivity in percent_positivity_values:
+test_number = 1
+
+for threshold in range(MAX_THRESHOLD_VALUE):
+    threshold_values.append(threshold)
+    for percent_positivity in percent_positivity_values:
+        result_matrix = clean_color_matrix(basic_color_matrix, TARGET_TYPE, REPLACEMENT_TYPE, threshold, percent_positivity)
+        # record details of test in log
+        logEntry = "{} -- threshold: {} -- percent positivity: {}".format(test_number, threshold, percent_positivity) 
+        # TODO add method to count how many differences exist between the two arrays
 
 
 test_out.close()
