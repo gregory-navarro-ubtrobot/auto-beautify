@@ -1,7 +1,9 @@
+import copy
+
 # Using the 'resolution' from the umap file, estimate what the maximum size of an instance of 'noise' might be.
 # Then search each element of the array to see if it is the center of such a noise instance.
 def  clean_color_matrix(two_d_array, target_type, replacement_type, threshold, percent_positivity):
-  updated_array = two_d_array.copy()
+  updated_array = copy.deepcopy(two_d_array)
   imax = len(two_d_array)
   jmax = len(two_d_array[0])
 
@@ -28,7 +30,7 @@ def is_noise(two_d_array, i, j, threshold, percent_positivity):
   center_element = two_d_array[i][j]
   subset = get_subset(two_d_array, i, j, threshold)
   # find number of occurences of center element in hte subsetf
-  positives = two_d_array.count(center_element)
+  positives = subset.count(center_element)
   percent_positive = positives / len(subset)
   if (percent_positive >= percent_positivity):
     return False
