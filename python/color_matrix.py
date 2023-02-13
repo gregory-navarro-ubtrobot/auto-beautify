@@ -1,7 +1,7 @@
 def get_color_matrix(mapdata):
-    ground = 0
-    wall = 1
-    undefined = 1
+    ground = "#fff"
+    wall = "rgba(59, 59, 59, 0.5)"
+    undefined = "#eee"
     height = len(mapdata)
     width = len(mapdata[0])
     color_matrix = []
